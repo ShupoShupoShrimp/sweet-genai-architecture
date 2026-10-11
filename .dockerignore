@@ -1,0 +1,19 @@
+*
+
+# --- Build inputs ------------------------------------------------------------
+!pyproject.toml
+!uv.lock
+!README.md
+!alembic.ini
+
+# --- Runtime code & data -----------------------------------------------------
+!src/
+!migrations/
+!artifacts/ 
+!packs/
+
+# --- Re-exclude inside the allowed directories -------------------------------
+**/__pycache__
+**/*.pyc
+packs/*/corpus
+packs/*/golden

@@ -1,1 +1,77 @@
+# --- Secrets & credentials ---------------------------------------------------
+.env
+.env.*
+!.env.example
+.secrets/
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+service-account*.json
+*-sa.json
+credentials*.json
+gcp-key*.json
+application_default_credentials.json
+gitleaks-report.*
 
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# --- Tool caches & test output -----------------------------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.import_linter_cache/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+junit*.xml
+.dspy_cache/
+
+# --- Local runtime state (compose volumes, scratch, logs) --------------------
+.data/
+pgdata/
+tmp/
+*.log
+*.sqlite3
+compose.override.yaml      
+
+# --- Models & weights: never in git ------------------------------------------
+models/
+.cache/
+*.safetensors
+*.gguf
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+
+# --- Generated data & raw benchmark output -----------------------------------
+packs/*/corpus/generated/
+bench-out/
+load-out/
+
+# --- Editors & OS ------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
