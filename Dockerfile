@@ -29,4 +29,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 USER appuser
 
-CMD ["uvicorn", "src.gps.api.main", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.sugar.api.main", "--host", "0.0.0.0", "--port", "8000"]

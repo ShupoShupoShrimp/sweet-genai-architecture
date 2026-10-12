@@ -1,5 +1,5 @@
 [project]
-name = "gps"
+name = "sugar"
 version = "0.1.0"
 description = "GenAi production service (RAG, agents, evals, serving)"
 readme = "README.md"
@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-gps = "gps:main"
+sugar = "sugar:main"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.13.0"]
@@ -30,4 +30,17 @@ dev = [
     "pytest-asyncio>=1.4.0",
     "pytest-cov>=7.1.0",
     "ruff>=0.17.0",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
 ]
