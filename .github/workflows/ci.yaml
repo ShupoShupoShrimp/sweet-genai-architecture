@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install the dependencies
+        run: uv sync --locked --all-groups
+
+      - name: Running ruff
+        run: uv run ruff check .
+
+      - name: Running formatter
+        run: uv run ruff format --check .
+
+      - name: Running pyright
+        run: uv run pyright
+
+  test:
+    runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d test_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      POSTGRES_URL: postgresql+asyncpg://postgres:password@localhost:5432/test_db
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install the dependencies
+        run: uv sync --locked --all-groups
+
+      - name: Running pytest
+        run: uv run pytest
+
+  build:
+    runs-on: ubuntu-22.04
+    needs: [lint, test]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: app:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
