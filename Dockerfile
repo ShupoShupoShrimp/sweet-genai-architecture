@@ -7,9 +7,14 @@ FROM base AS builder
 
 COPY --from=ghcr.io/astral-sh/uv /uv /bin/uv
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential\
+    libpq-dev\
+    && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml uv.lock ./
+    WORKDIR /app
+
+COPY pyproject.toml uv.lock README.md ./
 COPY src/ ./src/
 
 RUN uv sync --frozen --no-dev 
