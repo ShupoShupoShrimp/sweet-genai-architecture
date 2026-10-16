@@ -8,11 +8,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from sugar.db.models.auth import ApiKey, Tenant  # noqa: F401
-from sugar.db.models.base import Base
-from sugar.db.models.llm_calls import LlmCall  # noqa: F401
-
-# I used that comment so ruff will not complain and ruin the CI pipeline
+from sugar.db.models import Base
 
 load_dotenv()
 
