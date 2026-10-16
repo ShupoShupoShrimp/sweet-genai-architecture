@@ -5,6 +5,7 @@ from sqlalchemy import DateTime, ForeignKey, String, Uuid, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from sugar.db.models.base import Base
+from sugar.db.models.llm_calls import LlmCall
 
 
 class Tenant(Base):
@@ -30,6 +31,11 @@ class Tenant(Base):
     )
 
     api_keys: Mapped[list["ApiKey"]] = relationship(
+        back_populates="tenant",
+        cascade="all, delete-orphan",
+    )
+
+    llm_calls: Mapped[list["LlmCall"]] = relationship(
         back_populates="tenant",
         cascade="all, delete-orphan",
     )
