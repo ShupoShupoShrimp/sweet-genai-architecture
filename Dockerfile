@@ -28,10 +28,14 @@ RUN groupadd --gid 10001 appgroup \
     && useradd --uid 10001 --gid appgroup --shell /usr/sbin/nologin --create-home appuser 
 
 COPY --from=builder /app/.venv /app/.venv
+
 COPY src/ ./src/
+COPY alembic.ini ./
+COPY migrations/ ./migrations/
 
 ENV PATH="/app/.venv/bin:$PATH"
 
+RUN chown -R appuser:appgroup /app
 USER appuser
 
 CMD ["uvicorn", "src.sugar.api.main", "--host", "0.0.0.0", "--port", "8000"]
