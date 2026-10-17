@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import datetime
 import uuid
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Uuid, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sugar.db.models.auth import Tenant
 from sugar.db.models.base import Base
 
 
