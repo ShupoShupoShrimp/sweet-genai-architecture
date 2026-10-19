@@ -1,8 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sugar.db.models.auth import Tenant, ApiKey
+from sqlalchemy import select
 import secrets
 import hashlib
-
+import uuid
 
 async def register_tenant(
     company_name: str,
