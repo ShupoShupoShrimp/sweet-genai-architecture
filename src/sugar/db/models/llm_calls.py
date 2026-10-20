@@ -2,18 +2,23 @@ from __future__ import annotations
 
 import datetime
 import uuid
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Uuid, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from sugar.db.models.base import Base
 
+if TYPE_CHECKING:
+    from sugar.db.models.auth import Tenant
+
 
 class LlmCall(Base):
     __tablename__ = "llm_calls"
 
     id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, primary_key=True,
+        Uuid,
+        primary_key=True,
         server_default=text("gen_random_uuid()"),
     )
 
@@ -60,4 +65,4 @@ class LlmCall(Base):
         nullable=False,
     )
 
-    tenant: Mapped["Tenant"] = relationship(back_populates="llm_calls")
+    tenant: Mapped[Tenant] = relationship(back_populates="llm_calls")  # noqa: UP037
