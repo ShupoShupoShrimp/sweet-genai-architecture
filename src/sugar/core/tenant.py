@@ -1,14 +1,25 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from sugar.db.models.auth import Tenant, ApiKey
-from sqlalchemy import select
-import secrets
 import hashlib
+import secrets
 import uuid
+from sqlalchemy import select
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from sugar.core.exceptions import TenantAlreadyExists
+from sugar.db.models.auth import ApiKey, Tenant
+
 
 async def register_tenant(
     company_name: str,
     session: AsyncSession,
 ) -> Tenant:
+
+    stmt = select(Tenant).where(Tenant.name == company_name)
+    result = await session.execute(stmt)
+    tenant = result.scalar_one_or_none()
+
+    if tenant is not None:
+        raise TenantAlreadyExists(company_name=company_name)
 
     new_tenant = Tenant(name=company_name)
 
@@ -21,8 +32,8 @@ async def register_tenant(
 
 async def create_api_key(
     session: AsyncSession,
-    tenant_id,
-    ) -> tuple[ApiKey, str]:
+    tenant_id: uuid.UUID,
+) -> tuple[ApiKey, str]:
     raw_key = f"sk_live_{secrets.token_urlsafe(32)}"
 
     hashed_key = hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
