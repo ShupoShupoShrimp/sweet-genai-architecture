@@ -1,6 +1,3 @@
-import hashlib
-import secrets
-import uuid
 from sqlalchemy import select
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,20 +25,3 @@ async def register_tenant(
     await session.refresh(new_tenant)
 
     return new_tenant
-
-
-async def create_api_key(
-    session: AsyncSession,
-    tenant_id: uuid.UUID,
-) -> tuple[ApiKey, str]:
-    raw_key = f"sk_live_{secrets.token_urlsafe(32)}"
-
-    hashed_key = hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
-
-    new_api_key = ApiKey(tenant_id=tenant_id, key_hash=hashed_key)
-
-    session.add(new_api_key)
-    await session.commit()
-    await session.refresh(new_api_key)
-
-    return new_api_key, raw_key
