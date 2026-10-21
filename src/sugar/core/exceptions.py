@@ -21,7 +21,20 @@ class AuthorizationError(AppException):  # 403
 
 
 # ================= CHILD CATEGORY =================
+
+# =========== Tenant ===========
 class TenantAlreadyExists(ConflictError):
     def __init__(self, company_name: str):
         self.company = company_name
-        super().__init__(f"Tenant '{company_name}' already exists")
+        super().__init__(f"Tenant '{company_name}' already exists.")
+
+
+# =========== ApiKey ===========
+class InvalidApiKey(AuthenticationError):
+    def __init__(self):
+        super().__init__("The ApiKey is Invalid.")
+
+
+class RevokedApiKey(AuthenticationError):
+    def __init__(self):
+        super().__init__("The ApiKey was revoked. Therefore it is unavailable.")
