@@ -50,3 +50,6 @@ select = [
     "B",
     "UP",
 ]
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
