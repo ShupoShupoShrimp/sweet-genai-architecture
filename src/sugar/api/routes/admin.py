@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from sugar.api.schemas.api_key import PostApiKey
 from sugar.api.schemas.tenant import TenantRequest, TenantResponse
-from sugar.core.tenant import create_api_key, register_tenant
+from sugar.core.auth import create_api_key
+from sugar.core.tenant import register_tenant
 from sugar.db.session import get_db
 
 router = APIRouter(prefix="/v1/admin", tags=["Admin Provisioning"])

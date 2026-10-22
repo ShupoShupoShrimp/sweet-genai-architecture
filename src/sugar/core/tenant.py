@@ -1,9 +1,8 @@
 from sqlalchemy import select
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from sugar.core.exceptions import TenantAlreadyExists
-from sugar.db.models.auth import ApiKey, Tenant
+from sugar.db.models.auth import Tenant
 
 
 async def register_tenant(
